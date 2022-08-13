@@ -4,7 +4,9 @@ import json
 import time
 import logging
 import random
-
+import pandas as pd
+import os
+from IPython.core.display import HTML
 
 
 
@@ -65,6 +67,47 @@ while u <= loop:
 
 with open('product.json'  , 'w') as f:
     json.dump(result, f)
+    
+print('Done To parse all json . ')
+print('Time to analyze all products')
 
+
+jpg = []
+
+
+
+
+final_result = []
+
+df = pd.read_json('product.json')
+for products in range(len(df['name'])):
+    price_df = (df['price'][products])
+    if price_df <= 120:
+        name_df = (df['name'][products])
+        link_df = (df['link'][products])
+        image_df = (df['img'][products])
+        brand = (df['brand'][products])
+        jpg.append(image_df)
+
+        final_result.append({ 'name':name_df , 'price': price_df,  'Brand': brand ,'links':link_df, })
+
+
+
+xx = pd.json_normalize(final_result)
+
+
+xx['img'] = jpg
+# Converting links to html tags
+def path_to_image_html(path):
+    return '<img src="'+ path + '" width="120" >'
+
+
+xx.to_html(escape=False, formatters=dict(img=path_to_image_html))
+
+HTML(xx.to_html(escape=False,formatters=dict(img=path_to_image_html)))
+
+xx.to_html('product.html',escape=False, formatters=dict(img=path_to_image_html))
+print('All done')
+print('Result is saved in product.html ')
 
 
