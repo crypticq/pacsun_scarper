@@ -25,7 +25,7 @@ url = "https://www.pacsun.com/on/demandware.store/Sites-pacsun-Site/default/Sear
 
 how_many = BeautifulSoup(s.get(url).content , 'lxml').find('p' , {'class':'item-search-p'})
 loop =  int(how_many.text.split()[0].strip('('))
-print(f'Total t-shrits found {loop}')
+print(f'Total products found {loop}')
 time.sleep(10)
 u = 0
 result = []
