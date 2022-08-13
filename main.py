@@ -11,7 +11,7 @@ import random
 
 headers = {"Accept": "*/*", "Accept-Language": "en-US,en;q=0.9", "X-Requested-With": "XMLHttpRequest", "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Safari/604.18 FABUILD/7.3.0 FABUILD-iOS/7.3.0 APP/7.3.0", "Referer": "https://www.pacsun.com/mens/graphic-tees/?country=SA&FABUILD=iosmobileapp&start=24", "Accept-Encoding": "gzip, deflate"}
 
-print(headers)
+
 
 logger = logging.getLogger()
 handler = logging.StreamHandler()
