@@ -3,6 +3,7 @@ import time
 import logging
 import json
 import requests
+from pprint import pprint
 from bs4 import BeautifulSoup
 
 headers = {
@@ -54,30 +55,25 @@ def pacsun_scraper(product_type:str="mens-graphic-tees"):
 
             logger.info('Visiting %s with status code %d ' , response.url , response.status_code)
             print('Sleeping just to bypass cloudFlare <--')
-            time.sleep(4)
+            time.sleep(3)
             soup = BeautifulSoup(response.content, 'html.parser')
 
             product_len = len(soup.findAll('div', class_='product'))
 
             for i in range(product_len):
                 product_name = soup.findAll('a', class_='link')[i].text.strip()
-                product_brand = soup.findAll('div', class_='text-product-brand flex-row align-items-center')[
-                    i].text.strip()
-                if product_brand is None:
-                    product_brand = "No Know brand for this product . "
+                product_brand = soup.findAll('div', class_='text-product-brand flex-row align-items-center')[i].text.strip()
                 product_image = soup.findAll('img', {'class': 'w-100'})[i]['src'].split('?')[0]
-                price = (dol_to_sar(soup.findAll('span', class_='value bfx-price bfx-list-price')[i].text.strip()))
-                if price is None:
-                    print('Discount on', product_name, 'with price of', price)
-                    price = dol_to_sar(soup.findAll('span', class_='value bfx-price bfx-sale-price')[i].text.strip())
-
+                price = dol_to_sar(soup.findAll('span', {'class':'value bfx-price bfx-list-price'})[i].text.strip())
                 link = "https://www.pacsun.com" + soup.findAll('div', class_="product-tile")[i].find('a').get('href')
                 result.append(
                     {'name': product_name,
                      'brand': product_brand,
                      'price': price,
+                     'link': link,
                      'img': product_image,
-                     'link': link}
+                     }
+
                 )
 
 
@@ -104,5 +100,5 @@ if __name__ == '__main__':
 
     with open('product.json', 'w') as f:
         json.dump(result, f)
-
+    pprint(json.dumps(result))
     print('ALL product saved in product.json file ')
